@@ -43,8 +43,7 @@ func main() {
 	app.Version = "0.0.1"
 
 	app.Action = func(context *cli.Context) error {
-		args := context.Args()
-		inputFileName := args.First()
+		inputFileName := context.Args().Get(0)
 		var filetype string
 		if context.Bool("ast") {
 			filetype = "ast"
@@ -88,7 +87,7 @@ func main() {
 
 		if context.Bool("server") {
 			writer = &builder
-		} else if context.IsSet("output") {
+		} else if context.String("output") != "" {
 			file, err := os.OpenFile(context.String("output"), os.O_WRONLY, 0644)
 			if err != nil {
 				return err
